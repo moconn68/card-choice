@@ -1,46 +1,18 @@
 import React, { useState } from "react";
+import { getRandomEventsByCategory } from "lib/utils";
 import "./App.css";
-
-interface CardProps {
-  iconUri?: string;
-  text: string;
-}
-function Card(props: CardProps): JSX.Element {
-  const { iconUri, text } = props;
-  const [flippedClass, setFlippedClass] = useState<string>("");
-  function handleClick(event: React.MouseEvent) {
-    setFlippedClass((state) => {
-      return state === "" ? "flip-anim" : "";
-    });
-  }
-  return (
-    <div aria-label="flip-card" className="flip-card" onClick={handleClick}>
-      <div className={`flip-card-inner ${flippedClass}`}>
-        <div className="flip-card-front">
-          {iconUri ? (
-            <img
-              src={iconUri}
-              alt="Card Icon"
-              style={{ width: 100, height: 100 }}
-            />
-          ) : (
-            <h1>?</h1>
-          )}
-        </div>
-        <div className="flip-card-back">
-          <h1>{text}</h1>
-        </div>
-      </div>
-    </div>
-  );
-}
+import { CardEvent, CardEventCategory } from "lib/data";
+import Card from "components/Card";
 
 function App() {
+  const [events, updateEvents] = useState<[CardEvent, CardEvent]>(
+    getRandomEventsByCategory(CardEventCategory.Activity)
+  );
   return (
     <div className="App">
       <div className="cards-container">
-        <Card text="First Card" />
-        <Card text="Second Card" />
+        <Card event={events[0]} />
+        <Card event={events[1]} />
       </div>
     </div>
   );
